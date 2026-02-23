@@ -1,0 +1,19 @@
+services:
+  nemoguard-jailbreak-detect:
+    image: nvcr.io/nim/nvidia/nemoguard-jailbreak-detect:latest
+    ports:
+      - "${NIM_PORT:-8334}:8000"
+    environment:
+      - NGC_API_KEY=${NGC_API_KEY}
+    volumes:
+      - ${LOCAL_NIM_CACHE:-~/.cache/nim}:/opt/nim/.cache
+    shm_size: 16gb
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    stdin_open: true
+    tty: true
